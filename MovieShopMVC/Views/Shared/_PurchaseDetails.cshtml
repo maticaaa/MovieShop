@@ -1,0 +1,44 @@
+﻿@model ApplicationCore.Models.PurchaseDetailsResponseModel
+@{ 
+    var target = "Movie" + Model.MovieId;
+}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Movie-@Model.MovieId">
+        Purchase Details
+    </button>
+    <div class="modal fade" id="Movie-@Model.MovieId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-4">
+                                <img style="width:100%" src="@Model.PosterUrl" />
+                            </div>
+                            <div class="col">
+                                <i class="far fa-calendar-alt"></i> Purchased Date
+                                <span class="badge rounded-pill bg-dark text-white">@Model.PurchaseDateTime.ToShortDateString()</span>
+                                <hr />
+                                <i class="far fa-money-bill-alt"></i> Price
+                                <span class="badge rounded-pill bg-dark text-white">@Model.TotalPrice.ToString("C0")</span>
+                                <hr />
+                                <i class="fas fa-check-circle"></i> Purchase Number
+                                <span class="badge rounded-pill bg-dark text-white">
+                                    @Model.PurchaseNumber
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

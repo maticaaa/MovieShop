@@ -1,0 +1,103 @@
+﻿@using ApplicationCore.ServiceInterfaces
+@using MovieShopMVC.Services
+@inject IUserService _userService 
+@inject ICurrentUserService _currentUserService
+@model ApplicationCore.Models.MovieDetailsResponseModel
+
+<div class="container">
+    <div class="row bg-image" style="background-image: url(@Model.BackdropUrl)">
+        <div class="col-3">
+            <img style="width:100%" src="@Model.PosterUrl" />
+        </div>
+        <div class="col-6">
+            <h2>@Model.Title</h2>
+            <p class="tagline">@Model.Tagline</p>
+            <div>
+                <span class="tagline">@Model.RunTime m | @Model.ReleaseDate?.Year</span>
+                @foreach (var genre in Model.Genres)
+                {
+                    <span class="badge rounded-pill bg-secondary text-white">@genre.Name</span>
+                }
+            </div>
+            <div class="badge bg-success">@Model.Rating?.ToString("0.0")</div>
+            <p class="overview">@Model.Overview</p>
+
+
+        </div>
+        <div class="col">
+            <button class="btn btn-outline-light" btn-font-size="2px" type="button">Review</button>
+            <br />
+            <br />
+            @{
+                var isPurchased = await _userService.IsMoviePurchased(
+                   new ApplicationCore.Models.PurchaseRequestModel
+                   {
+                       MovieId = Model.Id
+                   }
+                   , _currentUserService.UserId);
+            }
+
+            @if (isPurchased)
+            {
+                <form class="">
+                    <button class="btn btn-dark" type="button">Watch Movie</button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="User" asp-action="Purchase" class="">
+                    <button class="btn btn-dark" type="submit" value="@Model.Id"  name="movieId">Buy @Model.Price?.ToString("C0")</button>
+                </form>
+            }
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4" style="background-color: #e6e6e6;">
+            <h4>MOVIE FACTS</h4>
+            <hr />
+            <p>
+                <i class="far fa-calendar-alt"></i> Release Date
+                <span class="badge rounded-pill bg-dark text-white">@Model.ReleaseDate?.ToShortDateString()</span>
+                <hr />
+                <i class="far fa-hourglass"></i> Run Time
+                <span class="badge rounded-pill bg-dark text-white">@Model.RunTime m</span>
+                <hr />
+                <i class="far fa-money-bill-alt"></i> Box Office
+                <span class="badge rounded-pill bg-dark text-white">@Model.Revenue?.ToString("C0")</span>
+                <hr />
+                <i class="fas fa-dollar-sign"></i> Budget
+                <span class="badge rounded-pill bg-dark text-white">
+                    @Model.Budget?.ToString("C0")
+                </span>
+            </p>
+            <br />
+            <h4>TRAILERS</h4>
+            <table>
+                @foreach (var trailer in Model.Trailers)
+                {
+                    <tr style="border-top: 1px solid #b9b9b9;">
+                        <td>
+                            <i class="fab fa-youtube"></i>
+                            <a href="@trailer.TrailerUrl">@trailer.Name</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="col-8">
+            <h4>MOVIE FACTS</h4>
+            <table>
+                @foreach (var cast in Model.Casts)
+                {
+                    <tr style="border-top: 1px solid #b9b9b9;">
+                        <td style="width:100px"><img style="height:50px; width:auto;" class="rounded-circle" src="@cast.ProfilePath" /></td>
+                        <td style="width:200px">@cast.Name</td>
+                        <td>@cast.Character</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</div>

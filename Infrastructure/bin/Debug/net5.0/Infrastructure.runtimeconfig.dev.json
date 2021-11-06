@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Matica\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Matica\\.nuget\\packages"
+    ]
+  }
+}

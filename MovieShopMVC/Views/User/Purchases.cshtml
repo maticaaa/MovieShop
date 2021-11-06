@@ -1,0 +1,30 @@
+﻿@model List<ApplicationCore.Models.PurchaseDetailsResponseModel>
+
+@{
+    ViewData["Title"] = "Purchases";
+}
+
+<div class="rounded">
+    <div class="row">
+        @foreach (var purchaseDetail in Model)
+        {
+        <div class="col-xl-2 col-sm-4 col-lg-3 col-6">
+            @*<partial name="_Moviecard" model="movieCard" />*@
+
+            @await Html.PartialAsync("_MovieCard", 
+                new ApplicationCore.Models.MovieCardResponseModel { 
+                    Id = purchaseDetail.MovieId,
+                    Title = purchaseDetail.Title,
+                    PosterUrl = purchaseDetail.PosterUrl
+                })
+            <div class="card-body">
+                
+                    @await Html.PartialAsync("_PurchaseDetails", purchaseDetail)
+                
+            </div>
+            
+        </div>
+
+        }
+    </div>
+</div>
